@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .clock-sceconds {
+        width: 120px;
+        height: 100px;
+        position: relative;
+      }
+
+      .clock-top,
+      .clock-bottom {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      .clock-top::after,
+      .clock-bottom::after {
+        display: block;
+        content: attr(data-after);
+        width: 100%;
+        height: 50%;
+        line-height: 0;
+        font-size: 80px;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(to bottom, #4c4c4c 0%, #0f0f0f 100%);
+        border-radius: 10px;
+        text-align: center;
+        /*  overflow: hidden;是让上下盒子都是展示一半  */
+        overflow: hidden;
+      }
+      .clock-top::before,
+      .clock-bottom::before {
+        overflow: hidden;
+        border-radius: 5%;
+        display: block;
+        line-height: 128%;
+        width: 100%;
+        height: 50%;
+        content: attr(data-before);
+        border-radius: 10px;
+        color: #fff;
+        background: linear-gradient(to bottom, #4c4c4c 0%, #0f0f0f 100%);
+        text-align: center;
+        font-size: 80px;
+        font-weight: 700;
+      }
+      /* 上下盒子开始旋转的代码 */
+      .clock-bottom {
+        transform-style: preserve-3d;
+      }
+      .clock-bottom::after,
+      .clock-bottom::before {
+        position: absolute;
+      }
+      .clock-bottom::after {
+        top: 50%;
+      }
+      .clock-bottom::before {
+        top: 0%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="clock-sceconds">
+      <div class="clock-top date" data-before="1" data-after="1"></div>
+      <div class="clock-bottom date" data-before="1" data-after="1"></div>
+    </div>
+    <div class="clock-sceconds">
+      <div class="clock-top date" data-before="1" data-after="1"></div>
+      <div class="clock-bottom date" data-before="1" data-after="1"></div>
+    </div>
+    <div class="clock-sceconds">
+      <div class="clock-top date" data-before="1" data-after="1"></div>
+      <div class="clock-bottom date" data-before="1" data-after="1"></div>
+    </div>
+    <script>
+      // 获取dom元素
+      let clockDom = document.get;
+      const clockDoms = document.querySelectorAll(".date");
+      setInterval(() => {
+        //   获取时间:时间对象
+        const DateObject = new Date();
+        // 获取秒数：秒数
+        let Seconds = DateObject.getSeconds();
+        // 设置上盒子的值
+        for (let index = 0; index < clockDoms.length; index++) {
+          clockDoms[index].dataset.after = "" + Seconds;
+        }
+        // 开始旋转：第二个子盒子的上盒子开始旋转
+        clockDoms[1].style.transition = "all 0.5s linear";
+        clockDoms[1].style.transform = "rotateX(90deg)";
+        // 开始监视：第二个子盒子的上盒子,一旦
+        clockDoms[1].addEventListener("transitionend", () => {
+          for (let index = 0; index < clockDoms.length; index++) {
+            clockDoms[index].dataset.before = "" + Seconds;
+          }
+          clockDoms[1].style.transition = "none";
+          clockDoms[1].style.transform = "rotateX(0deg)";
+        });
+      }, 1000);
+    </script>
+  </body>
+</html>

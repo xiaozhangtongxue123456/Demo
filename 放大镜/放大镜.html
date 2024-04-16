@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>放大镜</title>
+    <style>
+      .small-image,
+      .big-image {
+        float: left;
+        width: 300px;
+        height: 300px;
+        overflow: hidden;
+      }
+
+      .small-image {
+        position: relative;
+      }
+
+      .small-image img,
+      .big-image img {
+        width: 100%;
+        height: 100%;
+      }
+      .mask {
+        pointer-events: none;
+        width: 100px;
+        position: absolute;
+        height: 100px;
+        background-color: rgba(126, 126, 126, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 小图片盒子 -->
+    <div class="small-image">
+      <!-- 遮盖层 -->
+      <div class="mask"></div>
+      <img src="./image/微信图片_20230721095351.jpg" alt="" />
+    </div>
+    <!-- 大图片盒子 -->
+    <div class="big-image">
+      <img src="./image/微信图片_20230721095351.jpg" alt="" />
+    </div>
+  </body>
+  <script>
+    // 获取大盒子、小盒子、遮罩层的Dom元素，
+    let smallImg = document.querySelector(".small-image");
+    let bigImg = document.querySelector(".big-image");
+    let mask = document.querySelector(".mask");
+    // 获取鼠标、遮罩层的坐标
+    // 定义获取鼠标的坐标
+    let mouseX;
+    let mouseY;
+    let mousemove = function (e) {
+      mouseX = e.offsetX;
+      mouseY = e.offsetY;
+      // 遮罩层的移动:不过要先判断
+      if (mouseY >= smallImg.clientHeight - mask.clientHeight) {
+        mask.style.top = smallImg.clientHeight - mask.clientHeight;
+      }
+      {
+        mask.style.top = mouseY - mask.offsetHeight / 2 + "px";
+      }
+
+      mask.style.left = mouseX - mask.offsetWidth / 2 + "px";
+    };
+    smallImg.addEventListener("mousemove", mousemove);
+  </script>
+</html>
